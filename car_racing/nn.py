@@ -3,7 +3,7 @@ import torch.nn as nn
 
 
 def conv2d_size_out(size, kernel_size, stride):
-    """  """
+    """ Helper function to calculate the output dim of conv layer. """
     return (size - (kernel_size - 1) - 1) // stride + 1
 
 
@@ -41,7 +41,7 @@ class Dueling(nn.Module):
 
 
 class DQNET(nn.Module):
-    """  """
+    """ A convolution neural network inspired by DeepMind's paper: Playing Atari with Deep Reinforcement Learning. """
 
     def __init__(self, features_dim, fc_layers_dim, actions_dim, dqn_arch=VanillaDQN, dropout=0.1):
         super().__init__()

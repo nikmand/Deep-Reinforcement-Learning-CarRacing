@@ -42,6 +42,7 @@ if __name__ == '__main__':
                         4: [0.0, 0.0, 0.0]  # do nothing
                         }
 
+    # hyperparameters
     lr = 1e-3
     layers_dim = [256]
     gamma = 0.97
@@ -61,13 +62,16 @@ if __name__ == '__main__':
     criterion = torch.nn.MSELoss()
     optimizer = optim.Adam
 
-    steps_done = 0
+    steps_done = 0  # if continuing from a checkpoint steps_done should be updated accordingly
 
     agent = DQNAgentBuilder(state_dim, num_of_actions, gamma, eps_decay, eps_start, eps_end, gpu) \
         .set_criterion(criterion) \
         .build_network(layers_dim, arch) \
         .build_optimizer(optimizer, lr) \
         .build(agent_algorithm)
+
+    # the builder can load previously checkpointed weights to the neural network e.g.:
+    # .load_checkpoint("checkpoints/2021-09-27T02-13-53/policy_net_107584.pkl")
 
     memory = Memory(mem_size, batch_size, mem_init)
 
@@ -94,7 +98,7 @@ if __name__ == '__main__':
             memory.store(state, action, next_state, reward, done)  # Store the transition in memory
             state = next_state
 
-            # collect sufficient samples before start learning procedure
+            # collect sufficient samples before starting the learning procedure
             if memory.is_initialized():
                 transitions = memory.sample()
             else:

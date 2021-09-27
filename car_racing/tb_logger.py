@@ -54,7 +54,7 @@ class TBLogger:
         :param steps: total number of steps that have been performed so far
         """
 
-        if steps == 0:
+        if self.ep_duration == 0:
             return
 
         self.tb_writer.add_scalar('Agent/Loss', self.ep_loss / self.ep_duration, i_ep)
